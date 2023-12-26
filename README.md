@@ -2,9 +2,8 @@
 <h1 align="center">
 <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/ec559a9f6bfd399b82bb44393651661b08aaf7ba/icons/folder-markdown-open.svg" width="100" />
 <br>FIT-LAB-MQTT-AWSIOT</h1>
-<h3>◦ ► INSERT-TEXT</h3>
 <h3>◦ Developed with the software and tools below.</h3>
-
+<h3>◦ ► FIT-IoT testbed, RIOT, AWS cloud, Mosquitto MQTT, NodeRed, Influxdb, Grafana</h3>
 <p align="center">
 <img src="https://img.shields.io/badge/C-A8B9CC.svg?style=for-the-badge&logo=C&logoColor=black" alt="C" />
 <img src="https://img.shields.io/badge/JSON-000000.svg?style=for-the-badge&logo=JSON&logoColor=white" alt="JSON" />
