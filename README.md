@@ -25,6 +25,7 @@
 - [ Getting Started](#-getting-started)
     - [ Installation](#-installation)
     - [ Running FIT-LAB-MQTT-AWSIOT](#-running-FIT-LAB-MQTT-AWSIOT)
+    - [ Dashboard Setting](#-dashboard-setting)
     - [ Tests](#-tests)
 - [ Roadmap](#-roadmap)
 - [ Contributing](#-contributing)
@@ -208,6 +209,81 @@ Start Mosquitto service using the modified configuration file
 ```sh
 root@node-a8-3:~/A8/mqtt_bridge# mosquitto -c mosquitto.conf
 ```
+
+###  Dashboard Settings
+
+1. Create EC2 instance and assign IPv6 subnet to the instance following tutorial : 
+https://aws.amazon.com/blogs/networking-and-content-delivery/introducing-ipv6-only-subnets-and-ec2-instances/
+
+2. Login to EC2 instance using SSH and install mosquitto broker:
+```sh
+sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa
+sudo apt-get update
+sudo apt-get install mosquitto
+sudo apt-get install mosquitto-clients
+sudo apt clean
+```
+3. Verify if the mosquitto service is running:
+
+```sh
+sudo service mosquitto status
+```
+![Alt text](/images/image6.png)
+
+4. Install docker engine on EC2 instance following the tutorial: https://docs.docker.com/engine/install/ubuntu/
+
+5. Run the node NodeRed container on EC2 instance:
+
+```sh
+docker run -it -p 1880:1880 -v node_red_data:/data --name mynodered nodered/node-red
+```
+6. Run the node Influxdb container on EC2 instance:
+
+```sh
+docker run --detach --name influxdb -p 8086:8086 influxdb:2.2.0
+```
+7. Run the node Grafana container on EC2 instance:
+
+```sh
+docker run -d --name=grafana -p 3000:3000 grafana/grafana
+```
+8. Allow public access on following ports in network security settings:
+
+```sh
+Port 1883 (default port for Mosquitto)
+Port 1880 (default port for NodeRed)
+Port 8086 (default port for Influxdb)
+Port 3000 (default port for Grafana)
+```
+9. On influxdb, setup an organization name, for this project and create a bucket to collect data.
+
+10. On node red add mqtt in network block and connect it to influx out storage block.
+
+![Alt text](/images/image7.png)
+
+11. Configure mqqt broker with the ip address and port of mosquitto broker running on EC2 instance.
+
+![Alt text](/images/image8.png)
+
+![Alt text](/images/image9.png)
+
+12. Configure Influxdb out storage block with the ip address and port of influxdb service runnning on EC2 instances, and add details of bucket created in step 9.
+
+![Alt text](/images/image10.png)
+![Alt text](/images/image11.png)
+
+13. On Grafana add influxdb as data sources, and add details for the influxdb bucket created in step 9.
+
+![Alt text](/images/image12.png)
+![Alt text](/images/image13.png)
+
+14. Copy Query code from the influxdb bucket, and use it in grafana dashboard, to add visualization panel for each variable.
+![Alt text](/images/image14.png)
+![Alt text](/images/image15.png)
+
+15. After repeating the previous step for each variable save the dashboard.
+![Alt text](/images/image16.png)
+
 
 ###  Tests
 #### Build and Flash Sensor Node Firmware
