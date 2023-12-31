@@ -139,23 +139,22 @@ cd FIT-LAB-MQTT-AWSIOT
 
 ###  Running FIT-LAB-MQTT-AWSIOT
 
-#### Connect to Grenoble SSH Frontend
+1. Connect to Grenoble SSH Frontend
 ```bash
 ssh <login>@grenoble.iot-lab.info
 ```
 
-#### Start Experiment on IoT-Lab Test Bed
+2. Start Experiment on IoT-Lab Test Bed
 
 Launch an experiment with two M3 nodes and one A8 node
 Wait for the experiment to reach the "Running" state
 Get the list of nodes
 
-#### Build Border Router Firmware
+3. Build Border Router Firmware
 Source RIOT environment
 ```sh
 source /opt/riot.source
 ```
-
 Build border router firmware for M3 node with baudrate 500000
 Note: Use a different 802.15.4 channel if needed
 ```sh
@@ -163,14 +162,14 @@ make ETHOS_BAUDRATE=500000 DEFAULT_CHANNEL=<channel> BOARD=iotlab-m3 -C examples
 ```
 
 
-#### Flash Border Router Firmware
+4. Flash Border Router Firmware
 Flash the border router firmware to the first M3 node (m3-1 in this case)
 ```sh
 iotlab-node --flash examples/gnrc_border_router/bin/iotlab-m3/gnrc_border_router.elf -l grenoble,m3,<node-id>
 ```
 
 
-#### Configure Border Router Network
+5. Configure Border Router Network
 Choose an IPv6 prefix for the site (e.g., 2001:660:5307:3100::/64)
 Configure the network of the border router on m3-<node-id>
 Propagate an IPv6 prefix with ethos_uhcpd.py
@@ -178,7 +177,8 @@ Propagate an IPv6 prefix with ethos_uhcpd.py
 sudo ethos_uhcpd.py m3-<node-id> tap0 2001:660:5307:3100::1/64
 ```
 
-#### Setup MQTT Broker and Mosquitto Bridge on A8 Node
+6. Setup MQTT Broker and Mosquitto Bridge on A8 Node
+Now, in another terminal, SSH to the SSH frontend, and login into clone the mqtt_broker and mosquitto bridge configuration files in A8 shared directory.
 SSH into the A8 node
 ```sh
 ssh root@node-a8-1
@@ -187,24 +187,31 @@ Check the global IPv6 address of the A8 node
 ```sh
 ifconfig
 ```
-![Alt text](/images/image.png)
+![Alt text](/images/image1.png)
 
-#### Start MQTT Broker
+7. Start MQTT Broker
 From the A8 shared directory, start the MQTT broker using config.conf
 ```sh
 cd ~/A8
 broker_mqtts config.conf
 ```
-![Alt text](/images/image-1.png)
+![Alt text](/images/image2.png)
 
-#### Configure and Start Mosquitto Bridge
+Configure and Start Mosquitto Bridge
 From another terminal on the A8 node, check for existing mosquitto service and stop it
+![Alt text](/images/image3.png)
 Modify mosquitto.config with the IPv6 address of the Mosquitto broker (e.g., AWS-EC2 instance)
+
+![Alt text](/images/image4.png)
+
 Start Mosquitto service using the modified configuration file
+```sh
+root@node-a8-3:~/A8/mqtt_bridge# mosquitto -c mosquitto.conf
+```
 
 ###  Tests
 #### Build and Flash Sensor Node Firmware
-SSH into SSH frontend of Grenoble site
+From another terminal log into SSH front end of grenoble site
 Clone the sensor node directory containing Makefile and main.c
 Build the firmware for the sensor node using A8 node's IPv6 address and tap-id
 ```sh
@@ -222,8 +229,7 @@ Log into the M3 node
 ```sh
 nc m3-<node-id> 20000
 ```
-
-
+![Alt text](/images/image5.png)
 
 ---
 
