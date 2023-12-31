@@ -256,7 +256,7 @@ int main(void){
     
     puts("RIOT network stack Application");
 
-    puts("[###STARTING SIMULATED MEASUREMENTS###]\n\n");
+    puts("[###STARTING MEASUREMENTS###]\n\n");
     thread_create(stack_loop, sizeof(stack_loop), EMCUTE_PRIO, 0, main_loop, NULL, "main_loop");
     puts("Thread started successfully!");
 
