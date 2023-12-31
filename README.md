@@ -19,18 +19,15 @@
 ##  Table of Contents
 - [ Table of Contents](#-table-of-contents)
 - [ Overview](#-overview)
-- [ Features](#-features)
 - [ repository Structure](#-repository-structure)
 - [ Modules](#modules)
 - [ Getting Started](#-getting-started)
     - [ Installation](#-installation)
     - [ Running FIT-LAB-MQTT-AWSIOT](#-running-FIT-LAB-MQTT-AWSIOT)
-    - [ Dashboard Setting](#-dashboard-setting)
     - [ Tests](#-tests)
-- [ Roadmap](#-roadmap)
-- [ Contributing](#-contributing)
-- [ License](#-license)
-- [ Acknowledgments](#-acknowledgments)
+    - [ Dashboard](#-dashboard)
+
+
 
 ---
 
@@ -39,13 +36,9 @@
 
 ► In this project an IoT (Internet of Things) sensor node is developed using the RIOT operating system. The sensor node is designed to collect environmental data, including temperature and pressure, and transmit this data to an MQTT (Message Queuing Telemetry Transport) broker using secure protocols,The sensor node communicates with an MQTT broker, and the Mosquitto broker bridge is configured to connect to AWS IoT. and visualizes the data through Grafana.
 
+![Alt text](/images/image.png)
 ---
 
-##  Features
-
-► INSERT-TEXT
-
----
 
 
 ##  Repository Structure
@@ -210,7 +203,29 @@ Start Mosquitto service using the modified configuration file
 root@node-a8-3:~/A8/mqtt_bridge# mosquitto -c mosquitto.conf
 ```
 
-###  Dashboard Settings
+###  Tests
+#### Build and Flash Sensor Node Firmware
+From another terminal log into SSH front end of grenoble site
+Clone the sensor node directory containing Makefile and main.c
+Build the firmware for the sensor node using A8 node's IPv6 address and tap-id
+```sh
+make DEFAULT_CHANNEL=15 SERVER_ADDR=<IPv6 address> EMCUTE_ID=station(tap-id) BOARD=iotlab-m3 -C . clean all
+```
+
+#### Flash the sensor node firmware on an M3 node
+```sh
+iotlab-node --flash ./bin/iotlab-m3/SensorNode.elf -l grenoble,m3,<node-id>
+```
+
+
+#### Connect to Sensor Node
+Log into the M3 node
+```sh
+nc m3-<node-id> 20000
+```
+![Alt text](/images/image5.png)
+
+###  Dashboard 
 
 1. Create EC2 instance and assign IPv6 subnet to the instance following tutorial : 
 https://aws.amazon.com/blogs/networking-and-content-delivery/introducing-ipv6-only-subnets-and-ec2-instances/
@@ -285,90 +300,3 @@ Port 3000 (default port for Grafana)
 ![Alt text](/images/image16.png)
 
 
-###  Tests
-#### Build and Flash Sensor Node Firmware
-From another terminal log into SSH front end of grenoble site
-Clone the sensor node directory containing Makefile and main.c
-Build the firmware for the sensor node using A8 node's IPv6 address and tap-id
-```sh
-make DEFAULT_CHANNEL=15 SERVER_ADDR=<IPv6 address> EMCUTE_ID=station(tap-id) BOARD=iotlab-m3 -C . clean all
-```
-
-#### Flash the sensor node firmware on an M3 node
-```sh
-iotlab-node --flash ./bin/iotlab-m3/SensorNode.elf -l grenoble,m3,<node-id>
-```
-
-
-#### Connect to Sensor Node
-Log into the M3 node
-```sh
-nc m3-<node-id> 20000
-```
-![Alt text](/images/image5.png)
-
----
-
-
-##  Project Roadmap
-
-> - [X] `ℹ️  Task 1: Implement X`
-> - [ ] `ℹ️  Task 2: Implement Y`
-> - [ ] `ℹ️ ...`
-
-
----
-
-##  Contributing
-
-Contributions are welcome! Here are several ways you can contribute:
-
-- **[Submit Pull Requests](https://github.com/Awais-Mughal/FIT-LAB-MQTT-AWSIOT/blob/main/CONTRIBUTING.md)**: Review open PRs, and submit your own PRs.
-- **[Join the Discussions](https://github.com/Awais-Mughal/FIT-LAB-MQTT-AWSIOT/discussions)**: Share your insights, provide feedback, or ask questions.
-- **[Report Issues](https://github.com/Awais-Mughal/FIT-LAB-MQTT-AWSIOT/issues)**: Submit bugs found or log feature requests for AWAIS-MUGHAL.
-
-#### *Contributing Guidelines*
-
-<details closed>
-<summary>Click to expand</summary>
-
-1. **Fork the Repository**: Start by forking the project repository to your GitHub account.
-2. **Clone Locally**: Clone the forked repository to your local machine using a Git client.
-   ```sh
-   git clone <your-forked-repo-url>
-   ```
-3. **Create a New Branch**: Always work on a new branch, giving it a descriptive name.
-   ```sh
-   git checkout -b new-feature-x
-   ```
-4. **Make Your Changes**: Develop and test your changes locally.
-5. **Commit Your Changes**: Commit with a clear and concise message describing your updates.
-   ```sh
-   git commit -m 'Implemented new feature x.'
-   ```
-6. **Push to GitHub**: Push the changes to your forked repository.
-   ```sh
-   git push origin new-feature-x
-   ```
-7. **Submit a Pull Request**: Create a PR against the original project repository. Clearly describe the changes and their motivations.
-
-Once your PR is reviewed and approved, it will be merged into the main branch.
-
-</details>
-
----
-
-##  License
-
-
-This project is protected under the [SELECT-A-LICENSE](https://choosealicense.com/licenses) License. For more details, refer to the [LICENSE](https://choosealicense.com/licenses/) file.
-
----
-
-##  Acknowledgments
-
-- List any resources, contributors, inspiration, etc. here.
-
-[**Return**](#Top)
-
----
