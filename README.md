@@ -37,14 +37,8 @@
  In this project an IoT (Internet of Things) sensor node is developed using the RIOT operating system. The sensor node is designed to collect environmental data, including temperature and pressure, and transmit this data to an MQTT (Message Queuing Telemetry Transport) broker using secure protocols,The sensor node communicates with an MQTT broker, and the Mosquitto broker bridge is configured to connect to AWS IoT. and visualizes the data through Grafana.
 
 ![Alt text](/images/image17.png)
-<<<<<<< HEAD
----
-
-=======
 
 ---
->>>>>>> f8bd4d280d354e1ad9c1910400f464ca1d17bd3e
-
 
 
 ##  Repository Structure
@@ -294,5 +288,10 @@ Port 3000 (default port for Grafana)
 
 15. After repeating the previous step for each variable save the dashboard.
 ![Alt text](/images/image16.png)
+
+
+###  Demo Video
+
+[Demo Video](https://youtu.be/lsvIGaYIWuI)
 
 
